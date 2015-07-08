@@ -10,3 +10,4 @@ Software Requirements:
 5. ASP.NET MVC 4 (http://www.asp.net/mvc/mvc4)
 6. Nuget Package Manager (Already part of Visual Studio)
 7. Github for windows
+8. RobMongo GUI for MongoDB (http://robomongo.org/)
