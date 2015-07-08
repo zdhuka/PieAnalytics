@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3EF1EC
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PieAnalytics.Mongo", "PieAnalytics.Mongo\PieAnalytics.Mongo.csproj", "{A5B54290-AAD1-4675-8F7F-9C06ECB526C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PieAnalytics.DataCollector", "PieAnalytics.DataCollector\PieAnalytics.DataCollector.csproj", "{46C656E1-0162-4F78-91CE-E74926634C30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,14 @@ Global
 		{56076B17-A4C6-46D6-AEE8-6960D69847E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56076B17-A4C6-46D6-AEE8-6960D69847E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56076B17-A4C6-46D6-AEE8-6960D69847E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B54290-AAD1-4675-8F7F-9C06ECB526C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B54290-AAD1-4675-8F7F-9C06ECB526C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B54290-AAD1-4675-8F7F-9C06ECB526C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B54290-AAD1-4675-8F7F-9C06ECB526C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C656E1-0162-4F78-91CE-E74926634C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C656E1-0162-4F78-91CE-E74926634C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C656E1-0162-4F78-91CE-E74926634C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C656E1-0162-4F78-91CE-E74926634C30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
