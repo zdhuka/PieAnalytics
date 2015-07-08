@@ -9,3 +9,4 @@ Software Requirements:
 4. SQL Server 2008 R2 Developer (https://www.dreamspark.com/Product/Product.aspx?productid=22)
 5. ASP.NET MVC 4 (http://www.asp.net/mvc/mvc4)
 6. Nuget Package Manager (Already part of Visual Studio)
+7. Github for windows
