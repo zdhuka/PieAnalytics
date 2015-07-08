@@ -42,6 +42,12 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PieAnalytics.Mongo\PieAnalytics.Mongo.csproj">
+      <Project>{a5b54290-aad1-4675-8f7f-9c06ecb526c8}</Project>
+      <Name>PieAnalytics.Mongo</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

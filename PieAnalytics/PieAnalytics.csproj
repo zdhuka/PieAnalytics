@@ -144,6 +144,16 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PieAnalytics.DataCollector\PieAnalytics.DataCollector.csproj">
+      <Project>{46c656e1-0162-4f78-91ce-e74926634c30}</Project>
+      <Name>PieAnalytics.DataCollector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PieAnalytics.Mongo\PieAnalytics.Mongo.csproj">
+      <Project>{a5b54290-aad1-4675-8f7f-9c06ecb526c8}</Project>
+      <Name>PieAnalytics.Mongo</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
