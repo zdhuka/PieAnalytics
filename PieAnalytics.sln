@@ -18,10 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PieAnalytics.DataCollector"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FE7D6B61-8503-409B-8636-AFCB62E14BC1}"
 	ProjectSection(SolutionItems) = preProject
+		Mongo Cluster Setup.docx = Mongo Cluster Setup.docx
 		Readme.txt = Readme.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PioneerApp.SentimentAnalysis", "PioneerApp.SentimentAnalysis\PioneerApp.SentimentAnalysis.csproj", "{68D9139D-C976-45CC-BFA3-E4666A418FD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PioneerApp.DataAnalysis", "PioneerApp.DataAnalysis\PioneerApp.DataAnalysis.csproj", "{FF42C8BD-270A-465A-88F2-7585548F371C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +42,10 @@ Global
 		{46C656E1-0162-4F78-91CE-E74926634C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46C656E1-0162-4F78-91CE-E74926634C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46C656E1-0162-4F78-91CE-E74926634C30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68D9139D-C976-45CC-BFA3-E4666A418FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68D9139D-C976-45CC-BFA3-E4666A418FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68D9139D-C976-45CC-BFA3-E4666A418FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68D9139D-C976-45CC-BFA3-E4666A418FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF42C8BD-270A-465A-88F2-7585548F371C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF42C8BD-270A-465A-88F2-7585548F371C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF42C8BD-270A-465A-88F2-7585548F371C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF42C8BD-270A-465A-88F2-7585548F371C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
