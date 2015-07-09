@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PieAnalytics.DataCollector"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{FE7D6B61-8503-409B-8636-AFCB62E14BC1}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Box Sync\Dropbox Backup\UI THEMES\themeforest-1460451-mws-admin-full-featured-admin-template\html-template.zip = ..\..\Box Sync\Dropbox Backup\UI THEMES\themeforest-1460451-mws-admin-full-featured-admin-template\html-template.zip
+		html-template.zip = html-template.zip
 		Mongo Cluster Setup.docx = Mongo Cluster Setup.docx
 		Readme.txt = Readme.txt
 	EndProjectSection
