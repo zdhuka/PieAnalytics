@@ -15,7 +15,7 @@
     <AssemblyName>PieAnalytics</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -3082,7 +3082,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50743</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://PieAnalytics.com</IISUrl>
+          <IISUrl>http://localhost:50743/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
