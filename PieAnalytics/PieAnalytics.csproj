@@ -15,7 +15,7 @@
     <AssemblyName>PieAnalytics</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -3038,7 +3038,6 @@
     <Content Include="ui\css\fonts\ptsans\lILlYDvubYemzYzN7GbLkHhCUOGz7vYGh680lGh-uXM.woff" />
     <Content Include="ui\css\fonts\ptsans\LKf8nhXsWg5ybwEGXk8UBQ.woff" />
     <Content Include="ui\css\fonts\ptsans\PIPMHY90P7jtyjpXuZ2cLD8E0i7KZn-EPnyo3HZu7kw.woff" />
-    <Content Include="ui\php\wizard.php" />
     <Content Include="ui\plugins\elfinder\connectors\php\connector.php" />
     <Content Include="ui\plugins\elfinder\connectors\php\elFinder.class.php" />
     <Content Include="ui\plugins\elfinder\connectors\python\connector.py" />
@@ -3062,6 +3061,9 @@
   <ItemGroup>
     <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ui\php\wizard.php" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -3080,7 +3082,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50743</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50743/</IISUrl>
+          <IISUrl>http://PieAnalytics.com</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
