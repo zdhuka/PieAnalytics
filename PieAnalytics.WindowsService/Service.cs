@@ -29,8 +29,8 @@ namespace PieAnalytics.WindowsService
                 System.Diagnostics.EventLog.CreateEventSource(
                     "PieAnalyticsWindowsService", "PieAnalyticsWindowsServiceLog");
             }
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyNewLog";
+            eventLog1.Source = "PieAnalytics.WindowsService.Service";
+            eventLog1.Log = "PieAnalytics.WindowsService.Log";
 
         }
 
