@@ -261,7 +261,6 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <None Include="Properties\PublishProfiles\Local_lIS.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -3164,9 +3163,17 @@
       <Project>{46c656e1-0162-4f78-91ce-e74926634c30}</Project>
       <Name>PieAnalytics.DataCollector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PieAnalytics.DataEntity\PieAnalytics.DataEntity.csproj">
+      <Project>{0f43c4bd-a723-47f6-b68c-9f325218ed00}</Project>
+      <Name>PieAnalytics.DataEntity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PieAnalytics.Mongo\PieAnalytics.Mongo.csproj">
       <Project>{a5b54290-aad1-4675-8f7f-9c06ecb526c8}</Project>
       <Name>PieAnalytics.Mongo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PioneerApp.DataAnalysis\PioneerApp.DataAnalysis.csproj">
+      <Project>{ff42c8bd-270a-465a-88f2-7585548f371c}</Project>
+      <Name>PioneerApp.DataAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

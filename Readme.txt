@@ -11,3 +11,9 @@ Software Requirements:
 6. Nuget Package Manager (Already part of Visual Studio)
 7. Github for windows
 8. RobMongo GUI for MongoDB (http://robomongo.org/)
+
+
+References:
+1. Windows Service: https://msdn.microsoft.com/en-us/library/zt39148a(v=vs.110).aspx
+2. MongoDB: https://docs.mongodb.org/getting-started/csharp/
+
