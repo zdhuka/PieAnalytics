@@ -16,4 +16,5 @@ Software Requirements:
 References:
 1. Windows Service: https://msdn.microsoft.com/en-us/library/zt39148a(v=vs.110).aspx
 2. MongoDB: https://docs.mongodb.org/getting-started/csharp/
+3. MongoDB/C# driver: https://docs.mongodb.org/getting-started/csharp/client/
 

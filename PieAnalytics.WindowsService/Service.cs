@@ -19,7 +19,7 @@ namespace PieAnalytics.WindowsService
         private System.Diagnostics.EventLog eventLog1;
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
-        static int eventID = int.MinValue;
+        int eventID = 0;
 
         public Service(string[] args)
         {
@@ -54,7 +54,7 @@ namespace PieAnalytics.WindowsService
 
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60000; // 60 seconds
+            timer.Interval = 60000/2; // 60 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
 
             timer.Start();
@@ -70,19 +70,19 @@ namespace PieAnalytics.WindowsService
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
             try
             {
-                eventLog1.WriteEntry("Verifying:" + Directory.GetCurrentDirectory());
-                //string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), ("Test.txt"));
-                //eventLog1.WriteEntry("Path:" + path, EventLogEntryType.Information);
-                //if (!System.IO.File.Exists(path))
-                //{
-                //    eventLog1.WriteEntry("Service Started for first time. Creating File", EventLogEntryType.Information, eventID++);
-                //    System.IO.File.Create(path);
-                //}
-                //using (System.IO.StreamWriter file =
-                //new System.IO.StreamWriter(path, true))
-                //{
-                //    file.WriteLine("Success");
-                //}
+                string path = System.IO.Path.Combine("D:\\PieAnalytics\\PieAnalytics\\PieAnalytics.WindowsService\\bin\\", "Test.txt");
+                eventLog1.WriteEntry("Path:" + path, EventLogEntryType.Information);
+                if (!System.IO.File.Exists(path))
+                {
+                    eventLog1.WriteEntry("Creating File", EventLogEntryType.Information, eventID++);
+                    System.IO.File.Create(path).Close();
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(path, true))
+                {
+                    file.WriteLine("Success");
+                    file.Close();
+                }
             }
             catch (Exception exp)
             {
