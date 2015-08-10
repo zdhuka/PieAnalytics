@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PieAnalytics.WindowsService
@@ -17,6 +18,8 @@ namespace PieAnalytics.WindowsService
         private System.Diagnostics.EventLog eventLog1;
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
+        Thread thread;
+        static int eventID = int.MinValue;
 
         public Service(string[] args)
         {
@@ -28,9 +31,9 @@ namespace PieAnalytics.WindowsService
                 System.Diagnostics.EventLog.CreateEventSource(
                     "PieAnalyticsWindowsService", "PieAnalyticsWindowsServiceLog");
             }
-            eventLog1.Source = "PieAnalytics.WindowsService.Service";
-            eventLog1.Log = "PieAnalytics.WindowsService.Log";
-
+            eventLog1.Source = "PieAnalyticsWindowsServiceService";
+            eventLog1.Log = "PieAnalyticsWindowsServiceLog";
+            eventLog1.WriteEntry("Service Setting up", EventLogEntryType.Information,eventID++);
         }
 
         private void InitializeComponent()
@@ -48,11 +51,12 @@ namespace PieAnalytics.WindowsService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-
+            
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60000; // 60 seconds
+            timer.Interval = 60000*2; // 60 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            
             timer.Start();
 
             // Update the service state to Running.
@@ -64,16 +68,22 @@ namespace PieAnalytics.WindowsService
         {
             // TODO: Insert monitoring activities here.
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
-            if (!System.IO.File.Exists("Test.txt"))
+            try
             {
-                System.IO.File.Create("Test.txt");
+                if (!System.IO.File.Exists("Test.txt"))
+                {
+                    System.IO.File.Create("Test.txt");
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter("Test.txt", true))
+                {
+                    file.WriteLine("Success");
+                }
             }
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter("Test.txt", true))
+            catch(Exception exp)
             {
-                file.WriteLine("Success");
+                eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error, eventID++);
             }
-
         }
 
         protected override void OnStop()
@@ -89,11 +99,6 @@ namespace PieAnalytics.WindowsService
             // Update the service state to Stopped.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-        }
-
-        protected override void OnContinue()
-        {
-            eventLog1.WriteEntry("In OnContinue.");
         }
 
         protected override void Dispose(bool disposing)
