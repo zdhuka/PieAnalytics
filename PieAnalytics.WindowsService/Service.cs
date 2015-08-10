@@ -9,7 +9,6 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace PieAnalytics.WindowsService
 {
     public partial class Service : ServiceBase
@@ -65,6 +64,15 @@ namespace PieAnalytics.WindowsService
         {
             // TODO: Insert monitoring activities here.
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
+            if (!System.IO.File.Exists("Test.txt"))
+            {
+                System.IO.File.Create("Test.txt");
+            }
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter("Test.txt", true))
+            {
+                file.WriteLine("Success");
+            }
 
         }
 
