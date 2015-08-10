@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
@@ -50,12 +51,12 @@ namespace PieAnalytics.WindowsService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-            
+
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 60000; // 60 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            
+
             timer.Start();
 
             // Update the service state to Running.
@@ -69,20 +70,23 @@ namespace PieAnalytics.WindowsService
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
             try
             {
-                if (!System.IO.File.Exists("Test.txt"))
-                {
-                    eventLog1.WriteEntry("Service Started for first time. Creating File", EventLogEntryType.Information, eventID++);
-                    System.IO.File.Create("Test.txt");
-                }
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter("Test.txt", true))
-                {
-                    file.WriteLine("Success");
-                }
+                eventLog1.WriteEntry("Verifying:" + Directory.GetCurrentDirectory());
+                //string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), ("Test.txt"));
+                //eventLog1.WriteEntry("Path:" + path, EventLogEntryType.Information);
+                //if (!System.IO.File.Exists(path))
+                //{
+                //    eventLog1.WriteEntry("Service Started for first time. Creating File", EventLogEntryType.Information, eventID++);
+                //    System.IO.File.Create(path);
+                //}
+                //using (System.IO.StreamWriter file =
+                //new System.IO.StreamWriter(path, true))
+                //{
+                //    file.WriteLine("Success");
+                //}
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
-                eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error, eventID++);
+                eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error);
             }
         }
 
