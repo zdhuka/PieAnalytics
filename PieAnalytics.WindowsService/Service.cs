@@ -18,7 +18,6 @@ namespace PieAnalytics.WindowsService
         private System.Diagnostics.EventLog eventLog1;
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
-        Thread thread;
         static int eventID = int.MinValue;
 
         public Service(string[] args)
@@ -33,7 +32,7 @@ namespace PieAnalytics.WindowsService
             }
             eventLog1.Source = "PieAnalyticsWindowsServiceService";
             eventLog1.Log = "PieAnalyticsWindowsServiceLog";
-            eventLog1.WriteEntry("Service Setting up", EventLogEntryType.Information,eventID++);
+            eventLog1.WriteEntry("Service Setting up");
         }
 
         private void InitializeComponent()
@@ -54,7 +53,7 @@ namespace PieAnalytics.WindowsService
             
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60000*2; // 60 seconds
+            timer.Interval = 60000; // 60 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
             
             timer.Start();
@@ -72,6 +71,7 @@ namespace PieAnalytics.WindowsService
             {
                 if (!System.IO.File.Exists("Test.txt"))
                 {
+                    eventLog1.WriteEntry("Service Started for first time. Creating File", EventLogEntryType.Information, eventID++);
                     System.IO.File.Create("Test.txt");
                 }
                 using (System.IO.StreamWriter file =
@@ -99,6 +99,11 @@ namespace PieAnalytics.WindowsService
             // Update the service state to Stopped.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+        }
+
+        protected override void OnContinue()
+        {
+            eventLog1.WriteEntry("In OnContinue.");
         }
 
         protected override void Dispose(bool disposing)
