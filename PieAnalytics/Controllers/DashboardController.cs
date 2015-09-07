@@ -13,5 +13,17 @@ namespace PieAnalytics.Controllers
         {
             return View();
         }
+
+        // GET: Dashboard
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        // GET: Dashboard
+        public ActionResult Contact()
+        {
+            return View();
+        }
     }
 }
