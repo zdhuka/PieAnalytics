@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4f7e9f5e31a443e990be946aac5c7406" Name="Diagram1">
+        <EntityTypeShape EntityType="PieAnalyticsModel.ASPStateTempApplication" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.ASPStateTempSession" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.Job" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.UserProfile" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Membership" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_OAuthMembership" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="PieAnalyticsModel.webpages_UsersInRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

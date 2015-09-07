@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PieAnalytics.DataEntity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,7 @@ namespace PieAnalytics.WindowsService
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
         int eventID = 0;
+        private PieAnalyticsEntities _db = new PieAnalyticsEntities();
 
         public Service(string[] args)
         {
@@ -54,7 +56,7 @@ namespace PieAnalytics.WindowsService
 
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60000/2; // 60 seconds
+            timer.Interval = 60000/2; // 60/2 = 30 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
 
             timer.Start();
@@ -66,28 +68,52 @@ namespace PieAnalytics.WindowsService
 
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            // TODO: Insert monitoring activities here.
-            eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
-            try
-            {
-                string path = System.IO.Path.Combine("D:\\PieAnalytics\\PieAnalytics\\PieAnalytics.WindowsService\\bin\\", "Test.txt");
-                eventLog1.WriteEntry("Path:" + path, EventLogEntryType.Information);
-                if (!System.IO.File.Exists(path))
-                {
-                    eventLog1.WriteEntry("Creating File", EventLogEntryType.Information, eventID++);
-                    System.IO.File.Create(path).Close();
-                }
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(path, true))
-                {
-                    file.WriteLine("Success");
-                    file.Close();
-                }
-            }
-            catch (Exception exp)
-            {
-                eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error);
-            }
+            //// TODO: Insert monitoring activities here.
+            //eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information);
+            //try
+            //{
+            //    string path = System.IO.Path.Combine("D:\\PieAnalytics\\PieAnalytics\\PieAnalytics.WindowsService\\bin\\", "Test.txt");
+            //    eventLog1.WriteEntry("Path:" + path, EventLogEntryType.Information);
+            //    if (!System.IO.File.Exists(path))
+            //    {
+            //        eventLog1.WriteEntry("Creating File", EventLogEntryType.Information, eventID++);
+            //        System.IO.File.Create(path).Close();
+            //    }
+            //    using (System.IO.StreamWriter file =
+            //    new System.IO.StreamWriter(path, true))
+            //    {
+            //        file.WriteLine("Success");
+            //        file.Close();
+            //    }
+            //}
+            //catch (Exception exp)
+            //{
+            //    eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error);
+            //}
+
+            // TODO: Insert activities here.
+            eventLog1.WriteEntry("Fetching query data from the System", EventLogEntryType.Information);
+            var data = (from a in _db.Jobs
+                        where a.Status == (int)JobStatus.Queued
+                        orderby a.InsertDate ascending
+                       select a).First();
+            eventLog1.WriteEntry("Updating record for that query in the System", EventLogEntryType.Information);
+            data.Status = (int)JobStatus.Processing;
+            _db.SaveChanges();
+
+            eventLog1.WriteEntry("Fetching social media data into the System", EventLogEntryType.Information);
+            //Call the Rest API's 
+
+            eventLog1.WriteEntry("Finished fetching record for that data into the System", EventLogEntryType.Information);
+            //start MongoDB mapreduce
+
+            eventLog1.WriteEntry("Push sentiment analysis of that data within the System", EventLogEntryType.Information);
+            //Update SQL database on sentiment analysis
+
+            eventLog1.WriteEntry("Finished processing the query and data from/in/within the System", EventLogEntryType.Information);
+            data.Status = (int)JobStatus.Finished;
+            _db.SaveChanges();
+
         }
 
         protected override void OnStop()

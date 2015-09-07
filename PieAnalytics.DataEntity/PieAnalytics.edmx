@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PieAnalyticsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ASPStateTempApplications">
+          <Key>
+            <PropertyRef Name="AppId" />
+          </Key>
+          <Property Name="AppId" Type="int" Nullable="false" />
+          <Property Name="AppName" Type="char" MaxLength="280" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ASPStateTempSessions">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="nvarchar" MaxLength="88" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Expires" Type="datetime" Nullable="false" />
+          <Property Name="LockDate" Type="datetime" Nullable="false" />
+          <Property Name="LockDateLocal" Type="datetime" Nullable="false" />
+          <Property Name="LockCookie" Type="int" Nullable="false" />
+          <Property Name="Timeout" Type="int" Nullable="false" />
+          <Property Name="Locked" Type="bit" Nullable="false" />
+          <Property Name="SessionItemShort" Type="varbinary" MaxLength="7000" />
+          <Property Name="SessionItemLong" Type="image" />
+          <Property Name="Flags" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Jobs">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="JobName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Keywords" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ProviderUserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserId">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CreateTempTables" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteExpiredSessions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetHashCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="input" Type="varchar" Mode="In" />
+          <Parameter Name="hash" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="GetMajorVersion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_ver" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetAppID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="appName" Type="varchar" Mode="In" />
+          <Parameter Name="appId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockDate" Type="datetime" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItem2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockAge" Type="int" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItem3" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockAge" Type="int" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+          <Parameter Name="actionFlags" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItemExclusive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockDate" Type="datetime" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItemExclusive2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockAge" Type="int" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetStateItemExclusive3" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="InOut" />
+          <Parameter Name="locked" Type="bit" Mode="InOut" />
+          <Parameter Name="lockAge" Type="int" Mode="InOut" />
+          <Parameter Name="lockCookie" Type="int" Mode="InOut" />
+          <Parameter Name="actionFlags" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="TempGetVersion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ver" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="TempInsertStateItemLong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemLong" Type="image" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempInsertStateItemShort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempInsertUninitializedItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempReleaseStateItemExclusive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempRemoveStateItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempResetTimeout" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="TempUpdateStateItemLong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemLong" Type="image" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempUpdateStateItemLongNullShort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemLong" Type="image" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempUpdateStateItemShort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TempUpdateStateItemShortNullLong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="nvarchar" Mode="In" />
+          <Parameter Name="itemShort" Type="varbinary" Mode="In" />
+          <Parameter Name="timeout" Type="int" Mode="In" />
+          <Parameter Name="lockCookie" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="PieAnalyticsModelStoreContainer">
+          <EntitySet Name="ASPStateTempApplications" EntityType="Self.ASPStateTempApplications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ASPStateTempSessions" EntityType="Self.ASPStateTempSessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PieAnalyticsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PieAnalyticsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ASPStateTempApplications" EntityType="PieAnalyticsModel.ASPStateTempApplication" />
+          <EntitySet Name="ASPStateTempSessions" EntityType="PieAnalyticsModel.ASPStateTempSession" />
+          <EntitySet Name="Jobs" EntityType="PieAnalyticsModel.Job" />
+          <EntitySet Name="UserProfiles" EntityType="PieAnalyticsModel.UserProfile" />
+          <EntitySet Name="webpages_Membership" EntityType="PieAnalyticsModel.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="PieAnalyticsModel.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="PieAnalyticsModel.webpages_Roles" />
+          <AssociationSet Name="webpages_UsersInRoles" Association="PieAnalyticsModel.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <FunctionImport Name="CreateTempTables" />
+          <FunctionImport Name="DeleteExpiredSessions" />
+          <FunctionImport Name="GetHashCode">
+            <Parameter Name="input" Mode="In" Type="String" />
+            <Parameter Name="hash" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetMajorVersion">
+            <Parameter Name="p_ver" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetAppID">
+            <Parameter Name="appName" Mode="In" Type="String" />
+            <Parameter Name="appId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItem" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockDate" Mode="InOut" Type="DateTime" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItem2" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockAge" Mode="InOut" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItem3" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockAge" Mode="InOut" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+            <Parameter Name="actionFlags" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItemExclusive" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockDate" Mode="InOut" Type="DateTime" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItemExclusive2" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockAge" Mode="InOut" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetStateItemExclusive3" ReturnType="Collection(Binary)">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="InOut" Type="Binary" />
+            <Parameter Name="locked" Mode="InOut" Type="Boolean" />
+            <Parameter Name="lockAge" Mode="InOut" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="InOut" Type="Int32" />
+            <Parameter Name="actionFlags" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempGetVersion">
+            <Parameter Name="ver" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="TempInsertStateItemLong">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemLong" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempInsertStateItemShort">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempInsertUninitializedItem">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempReleaseStateItemExclusive">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempRemoveStateItem">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempResetTimeout">
+            <Parameter Name="id" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="TempUpdateStateItemLong">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemLong" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempUpdateStateItemLongNullShort">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemLong" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempUpdateStateItemShort">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TempUpdateStateItemShortNullLong">
+            <Parameter Name="id" Mode="In" Type="String" />
+            <Parameter Name="itemShort" Mode="In" Type="Binary" />
+            <Parameter Name="timeout" Mode="In" Type="Int32" />
+            <Parameter Name="lockCookie" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="ASPStateTempApplication">
+          <Key>
+            <PropertyRef Name="AppId" />
+          </Key>
+          <Property Name="AppId" Type="Int32" Nullable="false" />
+          <Property Name="AppName" Type="String" Nullable="false" MaxLength="280" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ASPStateTempSession">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="String" Nullable="false" MaxLength="88" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LockDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LockDateLocal" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LockCookie" Type="Int32" Nullable="false" />
+          <Property Name="Timeout" Type="Int32" Nullable="false" />
+          <Property Name="Locked" Type="Boolean" Nullable="false" />
+          <Property Name="SessionItemShort" Type="Binary" MaxLength="7000" FixedLength="false" />
+          <Property Name="SessionItemLong" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Flags" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="Guid" Nullable="false" />
+          <Property Name="JobName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="webpages_Roles" Relationship="PieAnalyticsModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="PieAnalyticsModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="webpages_UsersInRoles">
+          <End Type="PieAnalyticsModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
+          <End Type="PieAnalyticsModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PieAnalyticsModelStoreContainer" CdmEntityContainer="PieAnalyticsEntities">
+          <EntitySetMapping Name="ASPStateTempApplications">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.ASPStateTempApplication">
+              <MappingFragment StoreEntitySet="ASPStateTempApplications">
+                <ScalarProperty Name="AppName" ColumnName="AppName" />
+                <ScalarProperty Name="AppId" ColumnName="AppId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ASPStateTempSessions">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.ASPStateTempSession">
+              <MappingFragment StoreEntitySet="ASPStateTempSessions">
+                <ScalarProperty Name="Flags" ColumnName="Flags" />
+                <ScalarProperty Name="SessionItemLong" ColumnName="SessionItemLong" />
+                <ScalarProperty Name="SessionItemShort" ColumnName="SessionItemShort" />
+                <ScalarProperty Name="Locked" ColumnName="Locked" />
+                <ScalarProperty Name="Timeout" ColumnName="Timeout" />
+                <ScalarProperty Name="LockCookie" ColumnName="LockCookie" />
+                <ScalarProperty Name="LockDateLocal" ColumnName="LockDateLocal" />
+                <ScalarProperty Name="LockDate" ColumnName="LockDate" />
+                <ScalarProperty Name="Expires" ColumnName="Expires" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.Job">
+              <MappingFragment StoreEntitySet="Jobs">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="PieAnalyticsModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="CreateTempTables" FunctionName="PieAnalyticsModel.Store.CreateTempTables" />
+          <FunctionImportMapping FunctionImportName="DeleteExpiredSessions" FunctionName="PieAnalyticsModel.Store.DeleteExpiredSessions" />
+          <FunctionImportMapping FunctionImportName="GetHashCode" FunctionName="PieAnalyticsModel.Store.GetHashCode" />
+          <FunctionImportMapping FunctionImportName="GetMajorVersion" FunctionName="PieAnalyticsModel.Store.GetMajorVersion" />
+          <FunctionImportMapping FunctionImportName="TempGetAppID" FunctionName="PieAnalyticsModel.Store.TempGetAppID" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItem" FunctionName="PieAnalyticsModel.Store.TempGetStateItem" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItem2" FunctionName="PieAnalyticsModel.Store.TempGetStateItem2" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItem3" FunctionName="PieAnalyticsModel.Store.TempGetStateItem3" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItemExclusive" FunctionName="PieAnalyticsModel.Store.TempGetStateItemExclusive" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItemExclusive2" FunctionName="PieAnalyticsModel.Store.TempGetStateItemExclusive2" />
+          <FunctionImportMapping FunctionImportName="TempGetStateItemExclusive3" FunctionName="PieAnalyticsModel.Store.TempGetStateItemExclusive3" />
+          <FunctionImportMapping FunctionImportName="TempGetVersion" FunctionName="PieAnalyticsModel.Store.TempGetVersion" />
+          <FunctionImportMapping FunctionImportName="TempInsertStateItemLong" FunctionName="PieAnalyticsModel.Store.TempInsertStateItemLong" />
+          <FunctionImportMapping FunctionImportName="TempInsertStateItemShort" FunctionName="PieAnalyticsModel.Store.TempInsertStateItemShort" />
+          <FunctionImportMapping FunctionImportName="TempInsertUninitializedItem" FunctionName="PieAnalyticsModel.Store.TempInsertUninitializedItem" />
+          <FunctionImportMapping FunctionImportName="TempReleaseStateItemExclusive" FunctionName="PieAnalyticsModel.Store.TempReleaseStateItemExclusive" />
+          <FunctionImportMapping FunctionImportName="TempRemoveStateItem" FunctionName="PieAnalyticsModel.Store.TempRemoveStateItem" />
+          <FunctionImportMapping FunctionImportName="TempResetTimeout" FunctionName="PieAnalyticsModel.Store.TempResetTimeout" />
+          <FunctionImportMapping FunctionImportName="TempUpdateStateItemLong" FunctionName="PieAnalyticsModel.Store.TempUpdateStateItemLong" />
+          <FunctionImportMapping FunctionImportName="TempUpdateStateItemLongNullShort" FunctionName="PieAnalyticsModel.Store.TempUpdateStateItemLongNullShort" />
+          <FunctionImportMapping FunctionImportName="TempUpdateStateItemShort" FunctionName="PieAnalyticsModel.Store.TempUpdateStateItemShort" />
+          <FunctionImportMapping FunctionImportName="TempUpdateStateItemShortNullLong" FunctionName="PieAnalyticsModel.Store.TempUpdateStateItemShortNullLong" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
