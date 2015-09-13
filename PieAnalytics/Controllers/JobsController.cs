@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using PieAnalytics.DataEntity;
 using PieAnalytics.DataCollector;
+using PieAnalytics.Mongo;
+using MongoDB.Bson;
 
 namespace PieAnalytics.Controllers
 {
@@ -39,10 +41,31 @@ namespace PieAnalytics.Controllers
         // GET: Jobs/Create
         public ActionResult Create()
         {
-            BestBuy bestbuy = new BestBuy();
-            bestbuy.GetReview("iphone4");
-            Twitter tweet = new Twitter();
-            var d = tweet.GetTweet("iphone4");
+            // Fetch data from MongoDB
+            var db = new PieAnalytics.DataEntity.PieAnalyticsEntities();
+            var _mongodb = new Review();
+            var status = (int)JobStatus.Queued;
+            var jobentityquery = (from a in db.Jobs
+                             where a.Status == 1
+                             orderby a.InsertDate descending
+                             select a);
+            Job jobentity = jobentityquery.FirstOrDefault();
+            if (jobentity != null)
+            {
+                jobentity.Status = (int)JobStatus.Processing;
+                jobentity.UpdateDate = DateTime.Now;
+                //Update Status of Job in Porcesing
+                db.SaveChangesAsync();
+                foreach (var d in jobentity.Keywords.Split(',').ToList())
+                {
+                    // Call the API and fetch data
+                    BestBuy bestbuy = new BestBuy();
+                    var data = bestbuy.GetReview(d, "");
+
+                    // Store the result in MongoDB
+                    _mongodb.InsertReview(data, jobentity.JobID.ToString(), "BestBuy");
+                }
+            }
             return View();
         }
 

@@ -112,18 +112,18 @@ namespace PieAnalytics.DataCollector
             return data;
         }
 
-        public string Tweet(string query)
-        {
-            // Set up your credentials
-            TwitterCredentials.SetCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
-            // Set up your application credentials
-            TwitterCredentials.SetCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
-            var credentials = TwitterCredentials.CreateCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
-            TwitterCredentials.ExecuteOperationWithCredentials(credentials, () =>
-            {
-                Tweet.PublishTweet("myTweet");
-            });
+        //public string Tweet(string query)
+        //{
+        //    // Set up your credentials
+        //    TwitterCredentials.SetCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
+        //    // Set up your application credentials
+        //    TwitterCredentials.SetCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
+        //    var credentials = TwitterCredentials.CreateCredentials("Access_Token", "Access_Token_Secret", "Consumer_Key", "Consumer_Secret");
+        //    TwitterCredentials.ExecuteOperationWithCredentials(credentials, () =>
+        //    {
+        //        Tweet.PublishTweet("myTweet");
+        //    });
 
-        }
+        //}
     }
 }
