@@ -10,6 +10,7 @@ using PieAnalytics.DataEntity;
 using PieAnalytics.DataCollector;
 using PieAnalytics.Mongo;
 using MongoDB.Bson;
+using PioneerApp.DataAnalysis;
 
 namespace PieAnalytics.Controllers
 {
@@ -44,11 +45,11 @@ namespace PieAnalytics.Controllers
             // Fetch data from MongoDB
             var db = new PieAnalytics.DataEntity.PieAnalyticsEntities();
             var _mongodb = new Review();
-            var status = (int)JobStatus.Queued;
+            int status = (int)JobStatus.Queued;
             var jobentityquery = (from a in db.Jobs
-                             where a.Status == 1
-                             orderby a.InsertDate descending
-                             select a);
+                                  where a.Status == status
+                                  orderby a.InsertDate descending
+                                  select a);
             Job jobentity = jobentityquery.FirstOrDefault();
             if (jobentity != null)
             {
@@ -65,6 +66,14 @@ namespace PieAnalytics.Controllers
                     // Store the result in MongoDB
                     _mongodb.InsertReview(data, jobentity.JobID.ToString(), "BestBuy");
                 }
+
+                // Call Map Reduce Program for Aggreating data collected using mapreduce
+                BestBuyAnalysis analysis = new BestBuyAnalysis();
+                analysis.AnalyzeReviews(jobentity.JobID.ToString());
+
+                // Update Job Status as completed
+                jobentity.Status = (int)JobStatus.Finished;
+                db.SaveChanges();
             }
             return View();
         }
