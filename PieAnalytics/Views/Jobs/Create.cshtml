@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.Status, Enum.GetValues(typeof(JobStatus)).Cast<JobStatus>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), new { @class = "form-control drop-down" , @disabled = "disabled"} )
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>

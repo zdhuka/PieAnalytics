@@ -1,7 +1,59 @@
-﻿@{
+﻿@model PieAnalytics.DataEntity.PieAnalyticsEntities
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-<p>Login Successfull</p>
-
+<h2>Dashbard</h2>
+<div>
+    <div>
+        <fieldset>
+            <legend>Jobs on this website</legend>
+            <ol>
+                <li>
+                    Total Jobs Completed: @Model.Jobs.Where(m=>m.Status.Equals((int)JobStatus.Finished)).Count().ToString()
+                </li>
+                <li>
+                    Total Jobs in Progress: @Model.Jobs.Where(m => m.Status.Equals((int)JobStatus.Processing)).Count().ToString()
+                </li>
+                <li>
+                    Total Jobs in Queue: @Model.Jobs.Where(m => m.Status.Equals((int)JobStatus.Queued)).Count().ToString()
+                </li>
+                <li>
+                    Total number of Jobs: @Model.Jobs.Count().ToString()
+                </li>
+            </ol>
+        </fieldset>
+        <fieldset>
+            <legend>Your jobs on this website</legend>
+            <ol>
+                <li>
+                    Total Jobs Completed: @Model.Jobs.Where(m=>m.).Where(m => m.Status.Equals((int)JobStatus.Finished)).Count().ToString()
+                </li>
+                <li>
+                    Total Jobs in Progress: @Model.Jobs.Where(m => m.Status.Equals((int)JobStatus.Processing)).Count().ToString()
+                </li>
+                <li>
+                    Total Jobs in Queue: @Model.Jobs.Where(m => m.Status.Equals((int)JobStatus.Queued)).Count().ToString()
+                </li>
+                <li>
+                    Total number of Jobs: @Model.Jobs.Count().ToString()
+                </li>
+            </ol>
+        </fieldset>
+    </div>
+</div>
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            var request = $.ajax({
+                method: "GET",
+                url: "/Jobs/Index",
+                context: document.body
+            });
+            request.done(function (data) {
+                $("#partial_content").html(data);
+            });
+            request.fail(function () {
+                $("#partial_content").html("Some unknown error occured. Please try after some time");
+            });
+        });
+    </script>*@

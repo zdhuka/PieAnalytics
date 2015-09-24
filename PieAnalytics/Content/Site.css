@@ -754,3 +754,14 @@ tr.pager td {
             margin: 0;
         }
 }
+
+/* Custom dropdown style*/
+
+.drop-down{
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 310px;
+}

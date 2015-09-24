@@ -153,6 +153,22 @@ namespace PieAnalytics.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Jobs/Result/5
+        public ActionResult Result(Guid id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Job job = db.Jobs.Find(id);
+            if (job == null)
+            {
+                return HttpNotFound();
+            }
+            return View(job);
+        }
+
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

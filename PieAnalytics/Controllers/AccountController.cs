@@ -22,7 +22,7 @@ namespace PieAnalytics.Controllers
         {
             if (WebSecurity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Jobs");
             }
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -43,12 +43,12 @@ namespace PieAnalytics.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Jobs");
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "The Email ID or password provided is incorrect.");
             return View(model);
         }
 
@@ -85,7 +85,7 @@ namespace PieAnalytics.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Jobs");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -171,6 +171,22 @@ namespace PieAnalytics.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /Account/About
+        [AllowAnonymous]
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Account/Contact
+        [AllowAnonymous]
+        public ActionResult Contact()
+        {
+            return View();
         }
 
         #region Helpers

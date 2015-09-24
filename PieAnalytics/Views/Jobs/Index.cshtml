@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table" style="width:107%">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.JobName)
@@ -29,29 +29,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Keywords)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InsertDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.JobID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.JobID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Keywords)
+            </td>
+            <td>
+
+                @Enum.GetName(typeof(JobStatus), item.Status)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Status == (int)JobStatus.Processing ? "#" : item.JobID.ToString() }, new { @style = "" })
+                @Html.ActionLink("| Details", "Details", new { id = item.JobID })
+                @Html.ActionLink("| Delete", "Delete", new { id = item.Status == (int)JobStatus.Processing ? "#" : item.JobID.ToString() })
+                @Html.ActionLink("| Result", "Result", new { id = item.JobID })
+            </td>
+        </tr>
+    }
 
 </table>

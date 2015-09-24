@@ -24,16 +24,13 @@ namespace PieAnalytics.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
-        public string UserName { get; set; }
-    }
 
-    public class RegisterExternalLoginModel
-    {
-        [Required]
-        [Display(Name = "User name")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email ID is invalid")]
+        [Display(Name = "Email ID")]
+        [RegularExpression(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                           @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                           ErrorMessage = "Email ID is invalid")]
         public string UserName { get; set; }
-
-        public string ExternalLoginData { get; set; }
     }
 
     public class LocalPasswordModel
@@ -58,7 +55,11 @@ namespace PieAnalytics.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email ID is invalid")]
+        [Display(Name = "Email ID")]
+        [RegularExpression(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                           @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                           ErrorMessage = "Email ID is invalid")]
         public string UserName { get; set; }
 
         [Required]
@@ -73,7 +74,11 @@ namespace PieAnalytics.Models
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [DataType(DataType.EmailAddress, ErrorMessage="Email ID is invalid")]
+        [Display(Name = "Email ID")]
+        [RegularExpression(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                           @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                           ErrorMessage = "Email ID is invalid")]
         public string UserName { get; set; }
 
         [Required]
