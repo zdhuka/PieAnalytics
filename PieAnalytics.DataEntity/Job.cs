@@ -14,11 +14,20 @@ namespace PieAnalytics.DataEntity
     
     public partial class Job
     {
+        public Job()
+        {
+            this.JobResults = new HashSet<JobResult>();
+        }
+    
         public System.Guid JobID { get; set; }
         public string JobName { get; set; }
         public string Keywords { get; set; }
         public int Status { get; set; }
         public System.DateTime InsertDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int UserID { get; set; }
+    
+        public virtual ICollection<JobResult> JobResults { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

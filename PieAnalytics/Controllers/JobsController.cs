@@ -42,7 +42,7 @@ namespace PieAnalytics.Controllers
         // GET: Jobs/Create
         public ActionResult Create()
         {
-            // Fetch data from MongoDB
+            /*// Fetch data from MongoDB
             var db = new PieAnalytics.DataEntity.PieAnalyticsEntities();
             var _mongodb = new Review();
             int status = (int)JobStatus.Queued;
@@ -74,7 +74,7 @@ namespace PieAnalytics.Controllers
                 // Update Job Status as completed
                 jobentity.Status = (int)JobStatus.Finished;
                 db.SaveChanges();
-            }
+            }*/
             return View();
         }
 
@@ -87,6 +87,7 @@ namespace PieAnalytics.Controllers
         {
             if (ModelState.IsValid)
             {
+                job.UserID = db.UserProfiles.Where(m => m.UserName.Equals(User.Identity.Name)).Single().UserId;
                 job.JobID = Guid.NewGuid();
                 db.Jobs.Add(job);
                 db.SaveChanges();

@@ -12,12 +12,18 @@ namespace PieAnalytics.DataEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class webpages_OAuthMembership
+    public partial class JobResult
     {
-        public string Provider { get; set; }
-        public string ProviderUserId { get; set; }
-        public int UserId { get; set; }
+        public System.Guid JobID { get; set; }
+        public string Souce { get; set; }
+        public int Rating5 { get; set; }
+        public int Rating4 { get; set; }
+        public int Rating3 { get; set; }
+        public int Rating2 { get; set; }
+        public int Rating1 { get; set; }
+        public System.DateTime InsertDate { get; set; }
+        public System.DateTime UpdateDate { get; set; }
     
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual Job Job { get; set; }
     }
 }
