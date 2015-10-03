@@ -14,15 +14,16 @@ namespace PieAnalytics.DataEntity
     
     public partial class JobResult
     {
+        public int JobResultID { get; set; }
         public System.Guid JobID { get; set; }
-        public string Souce { get; set; }
+        public string Source { get; set; }
         public int Rating5 { get; set; }
         public int Rating4 { get; set; }
         public int Rating3 { get; set; }
         public int Rating2 { get; set; }
         public int Rating1 { get; set; }
         public System.DateTime InsertDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Job Job { get; set; }
     }

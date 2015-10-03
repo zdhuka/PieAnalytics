@@ -5,52 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PieAnalyticsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="ASPStateTempApplications">
-          <Key>
-            <PropertyRef Name="AppId" />
-          </Key>
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="AppName" Type="char" MaxLength="280" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ASPStateTempSessions">
-          <Key>
-            <PropertyRef Name="SessionId" />
-          </Key>
-          <Property Name="SessionId" Type="nvarchar" MaxLength="88" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
-          <Property Name="Expires" Type="datetime" Nullable="false" />
-          <Property Name="LockDate" Type="datetime" Nullable="false" />
-          <Property Name="LockDateLocal" Type="datetime" Nullable="false" />
-          <Property Name="LockCookie" Type="int" Nullable="false" />
-          <Property Name="Timeout" Type="int" Nullable="false" />
-          <Property Name="Locked" Type="bit" Nullable="false" />
-          <Property Name="SessionItemShort" Type="varbinary" MaxLength="7000" />
-          <Property Name="SessionItemLong" Type="image" />
-          <Property Name="Flags" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="JobResults">
           <Key>
-            <PropertyRef Name="JobID" />
-            <PropertyRef Name="Souce" />
-            <PropertyRef Name="Rating5" />
-            <PropertyRef Name="Rating4" />
-            <PropertyRef Name="Rating3" />
-            <PropertyRef Name="Rating2" />
-            <PropertyRef Name="Rating1" />
-            <PropertyRef Name="InsertDate" />
-            <PropertyRef Name="UpdateDate" />
+            <PropertyRef Name="JobResultID" />
           </Key>
+          <Property Name="JobResultID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JobID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Souce" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Source" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Rating5" Type="int" Nullable="false" />
           <Property Name="Rating4" Type="int" Nullable="false" />
           <Property Name="Rating3" Type="int" Nullable="false" />
           <Property Name="Rating2" Type="int" Nullable="false" />
           <Property Name="Rating1" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Jobs">
           <Key>
@@ -63,16 +31,6 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" />
           <Property Name="UserID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -113,15 +71,7 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="webpages_UsersInRoles">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_JobResults_Jobs">
+        <Association Name="FK_JobResults_Jobs1">
           <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
           <End Role="JobResults" Type="Self.JobResults" Multiplicity="*" />
           <ReferentialConstraint>
@@ -142,30 +92,6 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
             </Principal>
             <Dependent Role="Jobs">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_RoleId">
-          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
-          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="webpages_Roles">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="webpages_UsersInRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_UserId">
-          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
-          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfile">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="webpages_UsersInRoles">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -323,43 +249,19 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Parameter Name="lockCookie" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="PieAnalyticsModelStoreContainer">
-          <EntitySet Name="ASPStateTempApplications" EntityType="Self.ASPStateTempApplications" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ASPStateTempSessions" EntityType="Self.ASPStateTempSessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobResults" EntityType="Self.JobResults" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="JobResults" EntityType="Self.JobResults" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [JobResults].[JobID] AS [JobID], 
-    [JobResults].[Souce] AS [Souce], 
-    [JobResults].[Rating5] AS [Rating5], 
-    [JobResults].[Rating4] AS [Rating4], 
-    [JobResults].[Rating3] AS [Rating3], 
-    [JobResults].[Rating2] AS [Rating2], 
-    [JobResults].[Rating1] AS [Rating1], 
-    [JobResults].[InsertDate] AS [InsertDate], 
-    [JobResults].[UpdateDate] AS [UpdateDate]
-    FROM [dbo].[JobResults] AS [JobResults]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK_JobResults_Jobs" Association="Self.FK_JobResults_Jobs">
+          <AssociationSet Name="FK_JobResults_Jobs1" Association="Self.FK_JobResults_Jobs1">
             <End Role="Jobs" EntitySet="Jobs" />
             <End Role="JobResults" EntitySet="JobResults" />
           </AssociationSet>
           <AssociationSet Name="FK_Jobs_UserProfile" Association="Self.FK_Jobs_UserProfile">
             <End Role="UserProfile" EntitySet="UserProfile" />
             <End Role="Jobs" EntitySet="Jobs" />
-          </AssociationSet>
-          <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
-            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
-            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
-          </AssociationSet>
-          <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
-            <End Role="UserProfile" EntitySet="UserProfile" />
-            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_webpages_OAuthMembership_UserProfile" Association="Self.FK_webpages_OAuthMembership_UserProfile">
             <End Role="UserProfile" EntitySet="UserProfile" />
@@ -511,16 +413,13 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="ASPStateTempApplications" EntityType="PieAnalyticsModel.ASPStateTempApplication" />
-          <EntitySet Name="ASPStateTempSessions" EntityType="PieAnalyticsModel.ASPStateTempSession" />
+          <EntitySet Name="JobResults" EntityType="PieAnalyticsModel.JobResult" />
           <EntitySet Name="Jobs" EntityType="PieAnalyticsModel.Job" />
-          <EntitySet Name="sysdiagrams" EntityType="PieAnalyticsModel.sysdiagram" />
           <EntitySet Name="UserProfiles" EntityType="PieAnalyticsModel.UserProfile" />
           <EntitySet Name="webpages_Membership" EntityType="PieAnalyticsModel.webpages_Membership" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="PieAnalyticsModel.webpages_OAuthMembership" />
           <EntitySet Name="webpages_Roles" EntityType="PieAnalyticsModel.webpages_Roles" />
-          <EntitySet Name="JobResults" EntityType="PieAnalyticsModel.JobResult" />
-          <AssociationSet Name="FK_JobResults_Jobs" Association="PieAnalyticsModel.FK_JobResults_Jobs">
+          <AssociationSet Name="FK_JobResults_Jobs1" Association="PieAnalyticsModel.FK_JobResults_Jobs1">
             <End Role="Job" EntitySet="Jobs" />
             <End Role="JobResult" EntitySet="JobResults" />
           </AssociationSet>
@@ -532,11 +431,7 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
             <End Role="UserProfile" EntitySet="UserProfiles" />
             <End Role="webpages_OAuthMembership" EntitySet="webpages_OAuthMembership" />
           </AssociationSet>
-          <AssociationSet Name="webpages_UsersInRoles" Association="PieAnalyticsModel.webpages_UsersInRoles">
-            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -548,28 +443,21 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="ASPStateTempApplication">
+        <EntityType Name="JobResult">
           <Key>
-            <PropertyRef Name="AppId" />
+            <PropertyRef Name="JobResultID" />
           </Key>
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="AppName" Type="String" Nullable="false" MaxLength="280" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ASPStateTempSession">
-          <Key>
-            <PropertyRef Name="SessionId" />
-          </Key>
-          <Property Name="SessionId" Type="String" Nullable="false" MaxLength="88" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LockDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LockDateLocal" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LockCookie" Type="Int32" Nullable="false" />
-          <Property Name="Timeout" Type="Int32" Nullable="false" />
-          <Property Name="Locked" Type="Boolean" Nullable="false" />
-          <Property Name="SessionItemShort" Type="Binary" MaxLength="7000" FixedLength="false" />
-          <Property Name="SessionItemLong" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Flags" Type="Int32" Nullable="false" />
+          <Property Name="JobResultID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobID" Type="Guid" Nullable="false" />
+          <Property Name="Source" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rating5" Type="Int32" Nullable="false" />
+          <Property Name="Rating4" Type="Int32" Nullable="false" />
+          <Property Name="Rating3" Type="Int32" Nullable="false" />
+          <Property Name="Rating2" Type="Int32" Nullable="false" />
+          <Property Name="Rating1" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Job" Relationship="PieAnalyticsModel.FK_JobResults_Jobs1" FromRole="JobResult" ToRole="Job" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -582,18 +470,8 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="JobResults" Relationship="PieAnalyticsModel.FK_JobResults_Jobs" FromRole="Job" ToRole="JobResult" />
+          <NavigationProperty Name="JobResults" Relationship="PieAnalyticsModel.FK_JobResults_Jobs1" FromRole="Job" ToRole="JobResult" />
           <NavigationProperty Name="UserProfile" Relationship="PieAnalyticsModel.FK_Jobs_UserProfile" FromRole="Job" ToRole="UserProfile" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -603,7 +481,6 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Jobs" Relationship="PieAnalyticsModel.FK_Jobs_UserProfile" FromRole="UserProfile" ToRole="Job" />
           <NavigationProperty Name="webpages_OAuthMembership" Relationship="PieAnalyticsModel.FK_webpages_OAuthMembership_UserProfile" FromRole="UserProfile" ToRole="webpages_OAuthMembership" />
-          <NavigationProperty Name="webpages_Roles" Relationship="PieAnalyticsModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
         </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -637,32 +514,8 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           </Key>
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserProfiles" Relationship="PieAnalyticsModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
         </EntityType>
-        <EntityType Name="JobResult">
-          <Key>
-            <PropertyRef Name="JobID" />
-            <PropertyRef Name="Souce" />
-            <PropertyRef Name="Rating5" />
-            <PropertyRef Name="Rating4" />
-            <PropertyRef Name="Rating3" />
-            <PropertyRef Name="Rating2" />
-            <PropertyRef Name="Rating1" />
-            <PropertyRef Name="InsertDate" />
-            <PropertyRef Name="UpdateDate" />
-          </Key>
-          <Property Name="JobID" Type="Guid" Nullable="false" />
-          <Property Name="Souce" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Rating5" Type="Int32" Nullable="false" />
-          <Property Name="Rating4" Type="Int32" Nullable="false" />
-          <Property Name="Rating3" Type="Int32" Nullable="false" />
-          <Property Name="Rating2" Type="Int32" Nullable="false" />
-          <Property Name="Rating1" Type="Int32" Nullable="false" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Job" Relationship="PieAnalyticsModel.FK_JobResults_Jobs" FromRole="JobResult" ToRole="Job" />
-        </EntityType>
-        <Association Name="FK_JobResults_Jobs">
+        <Association Name="FK_JobResults_Jobs1">
           <End Type="PieAnalyticsModel.Job" Role="Job" Multiplicity="1" />
           <End Type="PieAnalyticsModel.JobResult" Role="JobResult" Multiplicity="*" />
           <ReferentialConstraint>
@@ -697,10 +550,6 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="webpages_UsersInRoles">
-          <End Type="PieAnalyticsModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
-          <End Type="PieAnalyticsModel.UserProfile" Role="UserProfile" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -754,28 +603,19 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="PieAnalyticsModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="PieAnalyticsModel.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="ASPStateTempApplications">
-            <EntityTypeMapping TypeName="PieAnalyticsModel.ASPStateTempApplication">
-              <MappingFragment StoreEntitySet="ASPStateTempApplications">
-                <ScalarProperty Name="AppName" ColumnName="AppName" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ASPStateTempSessions">
-            <EntityTypeMapping TypeName="PieAnalyticsModel.ASPStateTempSession">
-              <MappingFragment StoreEntitySet="ASPStateTempSessions">
-                <ScalarProperty Name="Flags" ColumnName="Flags" />
-                <ScalarProperty Name="SessionItemLong" ColumnName="SessionItemLong" />
-                <ScalarProperty Name="SessionItemShort" ColumnName="SessionItemShort" />
-                <ScalarProperty Name="Locked" ColumnName="Locked" />
-                <ScalarProperty Name="Timeout" ColumnName="Timeout" />
-                <ScalarProperty Name="LockCookie" ColumnName="LockCookie" />
-                <ScalarProperty Name="LockDateLocal" ColumnName="LockDateLocal" />
-                <ScalarProperty Name="LockDate" ColumnName="LockDate" />
-                <ScalarProperty Name="Expires" ColumnName="Expires" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+          <EntitySetMapping Name="JobResults">
+            <EntityTypeMapping TypeName="PieAnalyticsModel.JobResult">
+              <MappingFragment StoreEntitySet="JobResults">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Rating1" ColumnName="Rating1" />
+                <ScalarProperty Name="Rating2" ColumnName="Rating2" />
+                <ScalarProperty Name="Rating3" ColumnName="Rating3" />
+                <ScalarProperty Name="Rating4" ColumnName="Rating4" />
+                <ScalarProperty Name="Rating5" ColumnName="Rating5" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="JobResultID" ColumnName="JobResultID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -789,17 +629,6 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
                 <ScalarProperty Name="Keywords" ColumnName="Keywords" />
                 <ScalarProperty Name="JobName" ColumnName="JobName" />
                 <ScalarProperty Name="JobID" ColumnName="JobID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="PieAnalyticsModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -845,30 +674,7 @@ warning 6002: The table/view 'PieAnalytics.dbo.JobResults' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="JobResults">
-            <EntityTypeMapping TypeName="PieAnalyticsModel.JobResult">
-              <MappingFragment StoreEntitySet="JobResults">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="Rating1" ColumnName="Rating1" />
-                <ScalarProperty Name="Rating2" ColumnName="Rating2" />
-                <ScalarProperty Name="Rating3" ColumnName="Rating3" />
-                <ScalarProperty Name="Rating4" ColumnName="Rating4" />
-                <ScalarProperty Name="Rating5" ColumnName="Rating5" />
-                <ScalarProperty Name="Souce" ColumnName="Souce" />
-                <ScalarProperty Name="JobID" ColumnName="JobID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="PieAnalyticsModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
-            <EndProperty Name="UserProfile">
-              <ScalarProperty Name="UserId" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="webpages_Roles">
-              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

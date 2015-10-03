@@ -58,12 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ASPStateTempApplication.cs">
-      <DependentUpon>PieAnalytics.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ASPStateTempSession.cs">
-      <DependentUpon>PieAnalytics.tt</DependentUpon>
-    </Compile>
     <Compile Include="Job.cs">
       <DependentUpon>PieAnalytics.tt</DependentUpon>
     </Compile>
@@ -93,9 +87,6 @@
     <Compile Include="sp_helpdiagrams_Result.cs">
       <DependentUpon>PieAnalytics.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>PieAnalytics.tt</DependentUpon>
-    </Compile>
     <Compile Include="UserProfile.cs">
       <DependentUpon>PieAnalytics.tt</DependentUpon>
     </Compile>
@@ -111,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram4.cd" />
     <None Include="packages.config" />
     <EntityDeploy Include="PieAnalytics.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

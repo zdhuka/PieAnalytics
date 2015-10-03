@@ -14,11 +14,15 @@ namespace PioneerApp.DataAnalysis
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
 
-        public int AnalyzeReviews(string jobid)
+        public BestBuyAnalysis()
         {
             var d = new System.Configuration.AppSettingsReader().GetValue("MongoConnection", typeof(string));
             _client = new MongoDB.Driver.MongoClient(d.ToString());
             _database = _client.GetDatabase("PieAnalytics");
+        }
+
+        public int AnalyzeReviews(string jobid)
+        {
             BsonJavaScript map = @"
             function() {
                 var data = this.reviews.reviews;
@@ -50,5 +54,14 @@ namespace PioneerApp.DataAnalysis
             return asyncresults.Exception == null ? 1 : -1;
         }
 
+        public List<BsonDocument> GetResultAnalysedReviws(string jobid)
+        {
+            var collection = _database.GetCollection<BsonDocument>("ReviewResults");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id.jobid", jobid);
+            var data = collection.Find(filter);
+            var result  = data.ToListAsync<BsonDocument>();
+            while (!result.IsCompleted) ;
+            return (List<BsonDocument>)result.Result;
+        }
     }
 }

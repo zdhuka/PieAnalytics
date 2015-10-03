@@ -1,4 +1,8 @@
-﻿using PieAnalytics.DataEntity;
+﻿using MongoDB.Bson;
+using PieAnalytics.DataCollector;
+using PieAnalytics.DataEntity;
+using PieAnalytics.Mongo;
+using PioneerApp.DataAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +24,7 @@ namespace PieAnalytics.WindowsService
         private System.Diagnostics.EventLog eventLog1;
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
-        int eventID = 0;
+        //int eventID = 0;
         private PieAnalyticsEntities _db = new PieAnalyticsEntities();
 
         public Service(string[] args)
@@ -91,29 +95,52 @@ namespace PieAnalytics.WindowsService
             //    eventLog1.WriteEntry(exp.Message, EventLogEntryType.Error);
             //}
 
+
+
             // TODO: Insert activities here.
             eventLog1.WriteEntry("Fetching query data from the System", EventLogEntryType.Information);
-            var data = (from a in _db.Jobs
-                        where a.Status == (int)JobStatus.Queued
-                        orderby a.InsertDate ascending
-                       select a).First();
-            eventLog1.WriteEntry("Updating record for that query in the System", EventLogEntryType.Information);
-            data.Status = (int)JobStatus.Processing;
-            _db.SaveChanges();
+            var db = new PieAnalytics.DataEntity.PieAnalyticsEntities();
+            var _mongodb = new Review();
+            int status = (int)JobStatus.Queued;
+            var jobentityquery = (from a in db.Jobs
+                                  where a.Status == status
+                                  orderby a.InsertDate descending
+                                  select a);
+            Job jobentity = jobentityquery.FirstOrDefault();
+            if (jobentity != null)
+            {
+                jobentity.Status = (int)JobStatus.Processing;
+                jobentity.UpdateDate = DateTime.Now;
+                //Update Status of Job in Porcesing
+                db.SaveChangesAsync();
+                eventLog1.WriteEntry("Updating record for that query in the System", EventLogEntryType.Information);
 
-            eventLog1.WriteEntry("Fetching social media data into the System", EventLogEntryType.Information);
-            //Call the Rest API's 
+                foreach (var d in jobentity.Keywords.Split(',').ToList())
+                {
+                    eventLog1.WriteEntry("Fetching social media data into the System", EventLogEntryType.Information);
+                    //Call the Rest API's 
+                    // Call the API and fetch data
+                    BestBuy bestbuy = new BestBuy();
+                    BsonDocument data = bestbuy.GetReview(d, "");
 
-            eventLog1.WriteEntry("Finished fetching record for that data into the System", EventLogEntryType.Information);
-            //start MongoDB mapreduce
+                    // Store the result in MongoDB
+                    _mongodb.InsertReview(data, jobentity.JobID.ToString(), "BestBuy");
+                    eventLog1.WriteEntry("Finished fetching record for that data into the System", EventLogEntryType.Information);
+                    //start MongoDB mapreduce
+                }
 
-            eventLog1.WriteEntry("Push sentiment analysis of that data within the System", EventLogEntryType.Information);
-            //Update SQL database on sentiment analysis
+                eventLog1.WriteEntry("Push sentiment analysis of that data within the System", EventLogEntryType.Information);
+                // Call Map Reduce Program for Aggreating data collected using mapreduce
+                BestBuyAnalysis analysis = new BestBuyAnalysis();
+                analysis.AnalyzeReviews(jobentity.JobID.ToString());
+                //Update SQL database on sentiment analysis
 
-            eventLog1.WriteEntry("Finished processing the query and data from/in/within the System", EventLogEntryType.Information);
-            data.Status = (int)JobStatus.Finished;
-            _db.SaveChanges();
 
+                eventLog1.WriteEntry("Finished processing the query and data from/in/within the System", EventLogEntryType.Information);
+                // Update Job Status as completed
+                jobentity.Status = (int)JobStatus.Finished;
+                db.SaveChanges();
+            }
         }
 
         protected override void OnStop()

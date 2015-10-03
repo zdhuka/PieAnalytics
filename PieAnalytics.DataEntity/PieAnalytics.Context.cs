@@ -27,15 +27,12 @@ namespace PieAnalytics.DataEntity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ASPStateTempApplication> ASPStateTempApplications { get; set; }
-        public virtual DbSet<ASPStateTempSession> ASPStateTempSessions { get; set; }
+        public virtual DbSet<JobResult> JobResults { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
         public virtual DbSet<webpages_Membership> webpages_Membership { get; set; }
         public virtual DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
-        public virtual DbSet<JobResult> JobResults { get; set; }
     
         public virtual int CreateTempTables()
         {

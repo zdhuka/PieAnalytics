@@ -5,19 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4f7e9f5e31a443e990be946aac5c7406" Name="Diagram1">
-        <EntityTypeShape EntityType="PieAnalyticsModel.ASPStateTempApplication" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.ASPStateTempSession" Width="1.5" PointX="2.75" PointY="7.75" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.Job" Width="1.5" PointX="5.25" PointY="3.75" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.UserProfile" Width="1.5" PointX="3" PointY="2.875" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Membership" Width="1.5" PointX="4.75" PointY="7.75" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_OAuthMembership" Width="1.5" PointX="5.25" PointY="1.125" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="3" />
-        <EntityTypeShape EntityType="PieAnalyticsModel.JobResult" Width="1.5" PointX="7.5" PointY="3.625" />
-        <AssociationConnector Association="PieAnalyticsModel.FK_JobResults_Jobs" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.JobResult" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.Job" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.UserProfile" Width="1.5" PointX="0.75" PointY="3" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Membership" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_OAuthMembership" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="PieAnalyticsModel.webpages_Roles" Width="1.5" PointX="7.75" PointY="0.75" />
+        <AssociationConnector Association="PieAnalyticsModel.FK_JobResults_Jobs1" />
         <AssociationConnector Association="PieAnalyticsModel.FK_Jobs_UserProfile" />
         <AssociationConnector Association="PieAnalyticsModel.FK_webpages_OAuthMembership_UserProfile" />
-        <AssociationConnector Association="PieAnalyticsModel.webpages_UsersInRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

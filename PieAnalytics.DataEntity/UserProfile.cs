@@ -18,7 +18,6 @@ namespace PieAnalytics.DataEntity
         {
             this.Jobs = new HashSet<Job>();
             this.webpages_OAuthMembership = new HashSet<webpages_OAuthMembership>();
-            this.webpages_Roles = new HashSet<webpages_Roles>();
         }
     
         public int UserId { get; set; }
@@ -26,6 +25,5 @@ namespace PieAnalytics.DataEntity
     
         public virtual ICollection<Job> Jobs { get; set; }
         public virtual ICollection<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
-        public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
     }
 }
