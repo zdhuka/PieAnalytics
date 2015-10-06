@@ -2,20 +2,97 @@
 @{
     ViewBag.Title = "Result";
 }
+<style type="text/css">
+    #piediv, #bardiv {
+        text-align: center;
+        text-decoration: underline;
+        padding: 5px;
+    }
+
+
+    #pieplaceholder {
+        border: 2px solid grey;
+    }
+</style>
 
 <h2>Result</h2>
-
-
 @if (Model == null)
 {
     <div>No Results to display</div>
 }
 else
 {
-    <div id="barplaceholder">
-        <div id="pieplaceholder">
-            <img src="~/Content/piechart%20image.jpeg" width="50%" style="display:inline; float:left" />
-            <img src="~/Content/barchart%20image.jpeg" width="50%" style="display:inline; float:left" />
+    var GBNModelData = new Dictionary<string, int>(3);
+    GBNModelData.Add("Good", Model.Rating5 + Model.Rating4);
+    GBNModelData.Add("Bad", Model.Rating1 + Model.Rating2);
+    GBNModelData.Add("Neutral", Model.Rating3);
+
+    <div id="piediv">
+        <label>Social Media GBN Sentiment Results</label>
+        <div id="pieplaceholder" style="width:100%; height:400px;padding:5px">
         </div>
     </div>
+
+    <div id="bardiv">
+        <label>Source Wise Sentiment Ratings</label>
+        <div id="barplaceholder" style="width:100%; height:400px;padding:5px">
+        </div>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jquery/flot/pie")
+        @Styles.Render("~/Content/themes/base/css")
+    }
+    <script>
+    var piedata = [
+        { label: "Good", data: @GBNModelData["Good"] },
+        { label: "Bad", data: @GBNModelData["Bad"] },
+        { label: "Neutral", data: @GBNModelData["Neutral"] }
+    ];
+
+    var bardata = [
+        { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' },
+            { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' },
+    { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' }
+        ];
+
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                //Pie chart
+                var pieoptions = {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    xaxis: {
+                        ticks: [[1,'Rating 5'], [2,'Rating 4'], [3,'Rating 3'], [4,'Rating 2'], [5,'Rating 1']]
+                    }
+                };
+
+                $.plot('#pieplaceholder', piedata, pieoptions);
+                $("#pieplaceholder>.legend>div").css("width", "110px").css("height", "70px");
+
+                //Bar Chart
+                var baroptions = {
+                    xaxis: {
+                        minTickSize: 1
+                    },
+                    series: {
+                        bars: {
+                            show: true,
+                            barWidth: .9,
+                            align: "center"
+                        },
+                        stack: true
+                    }
+                };
+
+                $.plot("#barplaceholder", bardata, baroptions);
+                $("#barplaceholder>.legend>div").css("width", "110px").css("height", "70px");
+            }
+        }
+    </script>
 }

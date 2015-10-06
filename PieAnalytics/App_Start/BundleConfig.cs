@@ -11,6 +11,12 @@ namespace PieAnalytics
             bundles.Add(new ScriptBundle("~/bundles/jquery/flot").Include(
                         "~/Scripts/flot/*.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery/flot/pie").Include(
+                        "~/Scripts/flot/jquery.flot.js",
+                        "~/Scripts/flot/jquery.flot.pie.js",
+                        "~/Scripts/flot/jquery.flot.stack.js",
+                        "~/Scripts/flot/jquery.flot.canvas.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
