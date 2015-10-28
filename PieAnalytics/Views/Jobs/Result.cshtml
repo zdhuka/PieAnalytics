@@ -1,4 +1,5 @@
-﻿@model PieAnalytics.DataEntity.JobResult
+﻿
+@model PieAnalytics.DataEntity.JobResult
 @{
     ViewBag.Title = "Result";
 }
@@ -54,8 +55,8 @@ else
 
     var bardata = [
         { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' },
-            { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' },
-    { data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' }
+            //{ data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' },
+    //{ data: [[1, @Model.Rating5],[2, @Model.Rating4], [3, @Model.Rating3], [4, @Model.Rating2], [5, @Model.Rating1]], label: '@Model.Source' }
         ];
 
         document.onreadystatechange = function () {
