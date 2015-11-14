@@ -26,6 +26,7 @@ namespace PieAnalytics.WindowsService
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
         //int eventID = 0;
         private PieAnalyticsEntities _db = new PieAnalyticsEntities();
+        ServiceStatus serviceStatus = new ServiceStatus();
 
         public Service(string[] args)
         {
@@ -46,36 +47,36 @@ namespace PieAnalytics.WindowsService
         {
             components = new System.ComponentModel.Container();
             this.ServiceName = "PieAnalyticsWindowsService";
+            // update the service state to start pending.
+            serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
+            serviceStatus.dwWaitHint = 100000;
+            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
 
         protected override void OnStart(string[] args)
         {
-            eventLog1.WriteEntry("In OnStart");
-
-            // Update the service state to Start Pending.
-            ServiceStatus serviceStatus = new ServiceStatus();
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
-            serviceStatus.dwWaitHint = 100000;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-
+            DebugMode();
             // Set up a timer to trigger every minute.
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60000 / 2; // 60/2 = 30 seconds
+            timer.Interval = 60000; // 60/2 = 30 seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
 
             timer.Start();
-
             // Update the service state to Running.
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
 
+        [Conditional("DEBUG_SERVICE")]
+        private static void DebugMode()
+        {
+            Debugger.Break();
+        }
+
+
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             //WindowsService Starts here
-
-            System.Diagnostics.EventLog eventLog1 = new System.Diagnostics.EventLog();
-
             if (!System.Diagnostics.EventLog.SourceExists("PieAnalyticsWindowsService"))
             {
                 System.Diagnostics.EventLog.CreateEventSource(
@@ -175,58 +176,11 @@ namespace PieAnalytics.WindowsService
             }
 
             //WindowsService Ends here
-
-
-            //// TODO: Insert activities here.
-            //eventLog1.WriteEntry("Fetching query data from the System", EventLogEntryType.Information);
-            //var db = new PieAnalytics.DataEntity.PieAnalyticsEntities();
-            //var _mongodb = new Review();
-            //int status = (int)JobStatus.Queued;
-            //var jobentityquery = (from a in db.Jobs
-            //                      where a.Status == status
-            //                      orderby a.InsertDate descending
-            //                      select a);
-            //Job jobentity = jobentityquery.FirstOrDefault();
-            //if (jobentity != null)
-            //{
-            //    jobentity.Status = (int)JobStatus.Processing;
-            //    jobentity.UpdateDate = DateTime.Now;
-            //    //Update Status of Job in Porcesing
-            //    db.SaveChangesAsync();
-            //    eventLog1.WriteEntry("Updating record for that query in the System", EventLogEntryType.Information);
-
-            //    foreach (var d in jobentity.Keywords.Split(',').ToList())
-            //    {
-            //        eventLog1.WriteEntry("Fetching social media data into the System", EventLogEntryType.Information);
-            //        //Call the Rest API's 
-            //        // Call the API and fetch data
-            //        BestBuy bestbuy = new BestBuy();
-            //        BsonDocument data = bestbuy.GetReview(d, "");
-
-            //        // Store the result in MongoDB
-            //        _mongodb.InsertReview(data, jobentity.JobID.ToString(), "BestBuy");
-            //        eventLog1.WriteEntry("Finished fetching record for that data into the System", EventLogEntryType.Information);
-            //        //start MongoDB mapreduce
-            //    }
-
-            //    eventLog1.WriteEntry("Push sentiment analysis of that data within the System", EventLogEntryType.Information);
-            //    // Call Map Reduce Program for Aggreating data collected using mapreduce
-            //    BestBuyAnalysis analysis = new BestBuyAnalysis();
-            //    analysis.AnalyzeReviews(jobentity.JobID.ToString());
-            //    //Update SQL database on sentiment analysis
-
-
-            //    eventLog1.WriteEntry("Finished processing the query and data from/in/within the System", EventLogEntryType.Information);
-            //    // Update Job Status as completed
-            //    jobentity.Status = (int)JobStatus.Finished;
-            //    db.SaveChanges();
-            //}
         }
 
         protected override void OnStop()
         {
             // Update the service state to Stop Pending.
-            ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);

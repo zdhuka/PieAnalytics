@@ -14,6 +14,7 @@ using PioneerApp.DataAnalysis;
 
 namespace PieAnalytics.Controllers
 {
+    [Authorize]
     public class JobsController : Controller
     {
         private PieAnalyticsEntities db = new PieAnalyticsEntities();

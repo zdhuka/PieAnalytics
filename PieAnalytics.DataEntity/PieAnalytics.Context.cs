@@ -14,386 +14,386 @@ namespace PieAnalytics.DataEntity
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+
     public partial class PieAnalyticsEntities : DbContext
     {
         public PieAnalyticsEntities()
             : base("name=PieAnalyticsEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<JobResult> JobResults { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
         public virtual DbSet<webpages_Membership> webpages_Membership { get; set; }
         public virtual DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
-    
+
         public virtual int CreateTempTables()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateTempTables");
         }
-    
+
         public virtual int DeleteExpiredSessions()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteExpiredSessions");
         }
-    
+
         public virtual int GetHashCode(string input, ObjectParameter hash)
         {
             var inputParameter = input != null ?
                 new ObjectParameter("input", input) :
                 new ObjectParameter("input", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetHashCode", inputParameter, hash);
         }
-    
+
         public virtual int GetMajorVersion(ObjectParameter p_ver)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetMajorVersion", p_ver);
         }
-    
+
         public virtual int TempGetAppID(string appName, ObjectParameter appId)
         {
             var appNameParameter = appName != null ?
                 new ObjectParameter("appName", appName) :
                 new ObjectParameter("appName", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempGetAppID", appNameParameter, appId);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItem(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockDate, ObjectParameter lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItem", idParameter, itemShort, locked, lockDate, lockCookie);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItem2(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockAge, ObjectParameter lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItem2", idParameter, itemShort, locked, lockAge, lockCookie);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItem3(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockAge, ObjectParameter lockCookie, ObjectParameter actionFlags)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItem3", idParameter, itemShort, locked, lockAge, lockCookie, actionFlags);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItemExclusive(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockDate, ObjectParameter lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItemExclusive", idParameter, itemShort, locked, lockDate, lockCookie);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItemExclusive2(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockAge, ObjectParameter lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItemExclusive2", idParameter, itemShort, locked, lockAge, lockCookie);
         }
-    
+
         public virtual ObjectResult<byte[]> TempGetStateItemExclusive3(string id, ObjectParameter itemShort, ObjectParameter locked, ObjectParameter lockAge, ObjectParameter lockCookie, ObjectParameter actionFlags)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("TempGetStateItemExclusive3", idParameter, itemShort, locked, lockAge, lockCookie, actionFlags);
         }
-    
+
         public virtual int TempGetVersion(ObjectParameter ver)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempGetVersion", ver);
         }
-    
+
         public virtual int TempInsertStateItemLong(string id, byte[] itemLong, Nullable<int> timeout)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemLongParameter = itemLong != null ?
                 new ObjectParameter("itemLong", itemLong) :
                 new ObjectParameter("itemLong", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempInsertStateItemLong", idParameter, itemLongParameter, timeoutParameter);
         }
-    
+
         public virtual int TempInsertStateItemShort(string id, byte[] itemShort, Nullable<int> timeout)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemShortParameter = itemShort != null ?
                 new ObjectParameter("itemShort", itemShort) :
                 new ObjectParameter("itemShort", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempInsertStateItemShort", idParameter, itemShortParameter, timeoutParameter);
         }
-    
+
         public virtual int TempInsertUninitializedItem(string id, byte[] itemShort, Nullable<int> timeout)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemShortParameter = itemShort != null ?
                 new ObjectParameter("itemShort", itemShort) :
                 new ObjectParameter("itemShort", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempInsertUninitializedItem", idParameter, itemShortParameter, timeoutParameter);
         }
-    
+
         public virtual int TempReleaseStateItemExclusive(string id, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempReleaseStateItemExclusive", idParameter, lockCookieParameter);
         }
-    
+
         public virtual int TempRemoveStateItem(string id, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempRemoveStateItem", idParameter, lockCookieParameter);
         }
-    
+
         public virtual int TempResetTimeout(string id)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempResetTimeout", idParameter);
         }
-    
+
         public virtual int TempUpdateStateItemLong(string id, byte[] itemLong, Nullable<int> timeout, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemLongParameter = itemLong != null ?
                 new ObjectParameter("itemLong", itemLong) :
                 new ObjectParameter("itemLong", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempUpdateStateItemLong", idParameter, itemLongParameter, timeoutParameter, lockCookieParameter);
         }
-    
+
         public virtual int TempUpdateStateItemLongNullShort(string id, byte[] itemLong, Nullable<int> timeout, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemLongParameter = itemLong != null ?
                 new ObjectParameter("itemLong", itemLong) :
                 new ObjectParameter("itemLong", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempUpdateStateItemLongNullShort", idParameter, itemLongParameter, timeoutParameter, lockCookieParameter);
         }
-    
+
         public virtual int TempUpdateStateItemShort(string id, byte[] itemShort, Nullable<int> timeout, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemShortParameter = itemShort != null ?
                 new ObjectParameter("itemShort", itemShort) :
                 new ObjectParameter("itemShort", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempUpdateStateItemShort", idParameter, itemShortParameter, timeoutParameter, lockCookieParameter);
         }
-    
+
         public virtual int TempUpdateStateItemShortNullLong(string id, byte[] itemShort, Nullable<int> timeout, Nullable<int> lockCookie)
         {
             var idParameter = id != null ?
                 new ObjectParameter("id", id) :
                 new ObjectParameter("id", typeof(string));
-    
+
             var itemShortParameter = itemShort != null ?
                 new ObjectParameter("itemShort", itemShort) :
                 new ObjectParameter("itemShort", typeof(byte[]));
-    
+
             var timeoutParameter = timeout.HasValue ?
                 new ObjectParameter("timeout", timeout) :
                 new ObjectParameter("timeout", typeof(int));
-    
+
             var lockCookieParameter = lockCookie.HasValue ?
                 new ObjectParameter("lockCookie", lockCookie) :
                 new ObjectParameter("lockCookie", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TempUpdateStateItemShortNullLong", idParameter, itemShortParameter, timeoutParameter, lockCookieParameter);
         }
-    
+
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             var versionParameter = version.HasValue ?
                 new ObjectParameter("version", version) :
                 new ObjectParameter("version", typeof(int));
-    
+
             var definitionParameter = definition != null ?
                 new ObjectParameter("definition", definition) :
                 new ObjectParameter("definition", typeof(byte[]));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
-    
+
         public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             var versionParameter = version.HasValue ?
                 new ObjectParameter("version", version) :
                 new ObjectParameter("version", typeof(int));
-    
+
             var definitionParameter = definition != null ?
                 new ObjectParameter("definition", definition) :
                 new ObjectParameter("definition", typeof(byte[]));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
-    
+
         public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
-    
+
         public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
         }
-    
+
         public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
         }
-    
+
         public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
         {
             var diagramnameParameter = diagramname != null ?
                 new ObjectParameter("diagramname", diagramname) :
                 new ObjectParameter("diagramname", typeof(string));
-    
+
             var owner_idParameter = owner_id.HasValue ?
                 new ObjectParameter("owner_id", owner_id) :
                 new ObjectParameter("owner_id", typeof(int));
-    
+
             var new_diagramnameParameter = new_diagramname != null ?
                 new ObjectParameter("new_diagramname", new_diagramname) :
                 new ObjectParameter("new_diagramname", typeof(string));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
         }
-    
+
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
