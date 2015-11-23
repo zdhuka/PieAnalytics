@@ -50,10 +50,27 @@
                 @Html.DisplayFor(modelItem => item.UpdateDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Status == (int)JobStatus.Processing ? "#" : item.JobID.ToString() }, new { @style = "" })
-                @Html.ActionLink("| Details", "Details", new { id = item.JobID })
-                @Html.ActionLink("| Delete", "Delete", new { id = item.Status == (int)JobStatus.Processing ? "#" : item.JobID.ToString() })
-                @Html.ActionLink("| Result", "Result", new { id = item.JobID })
+                @if (item.Status == (int)JobStatus.Finished)
+                {
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.JobID })
+                        <span>|</span>*@
+                    @Html.ActionLink("Details", "Details", new { id = item.JobID })
+                    <span>|</span>
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                        <span>|</span>*@
+                    @Html.ActionLink("Result", "Result", new { id = item.JobID })
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.JobID })
+                    <span>|</span>
+                    @Html.ActionLink("Details", "Details", new { id = item.JobID })
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                    <span>|</span>
+                    @Html.ActionLink("Result", "Result", new { id = item.JobID })
+                }
+
             </td>
         </tr>
     }

@@ -22,7 +22,17 @@ namespace PieAnalytics.Controllers
         // GET: Jobs
         public ActionResult Index()
         {
-            return View(db.Jobs.ToList());
+            if (User.IsInRole("ADMIN"))
+            {
+                var result = db.Jobs.ToList();
+                return View(result);
+            }
+            else
+            {
+                var jobUserID = db.UserProfiles.Where(m => m.UserName.Equals(User.Identity.Name)).Single().UserId;
+                var result = db.Jobs.Where(m => m.UserID.Equals(jobUserID)).ToList();
+                return View(result);
+            }
         }
 
         // GET: Jobs/Details/5
